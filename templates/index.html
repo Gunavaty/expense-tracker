@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Expense Tracker</title>
+    <style>
+        body { font-family: Arial; margin: 20px; }
+        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .filters { margin: 20px 0; }
+        .filters input, .filters select { margin: 5px; padding: 5px; }
+        .add-btn { background: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <h1>My Expenses</h1>
+    
+    <a href="/add" class="add-btn">Add New Expense</a>
+    
+    <div class="filters">
+        <form method="GET">
+            <label>Filter by Month:</label>
+            <input type="month" name="month" value="{{ request.args.get('month', '') }}">
+            
+            <label>Filter by Category:</label>
+            <select name="category">
+                <option value="">All Categories</option>
+                {% for cat in categories %}
+                <option value="{{ cat }}" {% if request.args.get('category') == cat %}selected{% endif %}>
+                    {{ cat }}
+                </option>
+                {% endfor %}
+            </select>
+            
+            <button type="submit">Filter</button>
+            <a href="/">Clear Filters</a>
+        </form>
+    </div>
+    
+    <table>
+        <tr>
+            <th>Date</th>
+            <th>Amount</th>
+            <th>Category</th>
+            <th>Description</th>
+        </tr>
+        {% for expense in expenses %}
+        <tr>
+            <td>{{ expense.date }}</td>
+            <td>{{ "%.2f"|format(expense.amount) }}</td>
+            <td>{{ expense.category }}</td>
+            <td>{{ expense.description }}</td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="4">No expenses found</td>
+        </tr>
+        {% endfor %}
+    </table>
+    
+    <p>Total: {{ "%.2f"|format(expenses|sum(attribute='amount')) }}</p>
+</body>
+</html>
