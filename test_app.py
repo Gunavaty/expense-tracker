@@ -37,7 +37,7 @@ class ExpenseTrackerTest(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         
         with app.app_context():
-            expense = Expense.query.first()
+            expense = Expense.query.filter_by(amount=25.50).first()
             self.assertIsNotNone(expense)
             self.assertEqual(expense.amount, 25.50)
 

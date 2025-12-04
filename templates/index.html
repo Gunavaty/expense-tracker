@@ -15,7 +15,16 @@
 <body>
     <h1>My Expenses</h1>
     
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div style="background: lightcoral; padding: 10px; margin: 10px 0;">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    
     <a href="/add" class="add-btn">Add New Expense</a>
+    <a href="/budgets" class="add-btn" style="background: #2196F3; margin-left: 10px;">Manage Budgets</a>
     
     <div class="filters">
         <form method="GET">

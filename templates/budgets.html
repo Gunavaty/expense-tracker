@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Budgets</title>
+    <style>
+        body { font-family: Arial; margin: 20px; }
+        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        form { max-width: 400px; margin: 20px 0; }
+        label { display: block; margin-top: 10px; }
+        input, select { width: 100%; padding: 8px; margin-top: 5px; }
+        button { background: #4CAF50; color: white; padding: 10px 20px; margin-top: 15px; border: none; }
+        .back-link { margin-top: 20px; }
+        .message { background: lightgreen; padding: 10px; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <h1>Budget Management</h1>
+    
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="message">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    
+    <h2>Set Budget</h2>
+    <form method="POST">
+        <label>Category:</label>
+        <select name="category" required>
+            <option value="">Select Category</option>
+            <option value="Food">Food</option>
+            <option value="Transport">Transport</option>
+            <option value="Entertainment">Entertainment</option>
+            <option value="Shopping">Shopping</option>
+            <option value="Bills">Bills</option>
+            <option value="Other">Other</option>
+        </select>
+        
+        <label>Amount:</label>
+        <input type="number" name="amount" step="0.01" min="0" required>
+        
+        <label>Month:</label>
+        <select name="month" required>
+            <option value="1">January</option>
+            <option value="2">February</option>
+            <option value="3">March</option>
+            <option value="4">April</option>
+            <option value="5">May</option>
+            <option value="6">June</option>
+            <option value="7">July</option>
+            <option value="8">August</option>
+            <option value="9">September</option>
+            <option value="10">October</option>
+            <option value="11">November</option>
+            <option value="12">December</option>
+        </select>
+        
+        <label>Year:</label>
+        <input type="number" name="year" value="2024" required>
+        
+        <button type="submit">Set Budget</button>
+    </form>
+    
+    <h2>Current Budgets</h2>
+    <table>
+        <tr>
+            <th>Category</th>
+            <th>Amount</th>
+            <th>Month</th>
+            <th>Year</th>
+        </tr>
+        {% for budget in budgets %}
+        <tr>
+            <td>{{ budget.category }}</td>
+            <td>{{ "%.2f"|format(budget.amount) }}</td>
+            <td>{{ budget.month }}</td>
+            <td>{{ budget.year }}</td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="4">No budgets set</td>
+        </tr>
+        {% endfor %}
+    </table>
+    
+    <div class="back-link">
+        <a href="/">← Back to Expenses</a>
+    </div>
+</body>
+</html>
